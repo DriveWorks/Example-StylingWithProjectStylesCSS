@@ -4,6 +4,8 @@
 
 #### Minimum DriveWorks Version: 21.0
 
+> For styling via CSS in DriveWorks 20.3 and below, see: [IntegrationThemeExample-StylingWithExternalCSS](https://github.com/DriveWorks/IntegrationThemeExample-StylingWithExternalCSS)
+
 A distributable example that demonstrates how to style DriveWorks Controls using CSS via `ProjectStyles.css`.
 
 `ProjectStyles.css` is the optional custom stylesheet automatically loaded in DriveWorks desktop applications and Live when placed next to a `.driveprojx` file.
