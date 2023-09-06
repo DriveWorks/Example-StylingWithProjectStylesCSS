@@ -1,0 +1,352 @@
+/*
+  Styling with ProjectStyles.css
+  ------------------------------
+
+  This example demonstrates how to use ProjectStyles.css and the "Metadata" property in DriveWorks to target one or more Controls.
+  It also demonstrates additional styling opportunities made possible by CSS customization.
+
+  Styles in ProjectStyles.css are served automatically when a Project is rendered, and visible in:
+    - DriveWorks Desktop Applications
+    - DriveWorks Live
+
+  This entire style sheet can be copied next to a DriveWorks Project file, or individual selectors copied into an existing ProjectStyles.css file.
+  Changes will live update when viewed inside DriveWorks Administrator's Form Designer.
+*/
+
+/* ----------
+Set globally scoped properties/variables on the "host" Form element (<dw-form>)
+
+For detailed information on CSS "custom properties", see:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+---------- */
+
+:host {
+  /* Set re-usable CSS custom properties. */
+  --color-primary: blue;
+  --color-secondary: green;
+
+  /* Override pre-defined DriveWorks CSS custom properties, prefixed with "--dw-".
+  See <style name="global-properties"> inside <dw-form> for the full list. */
+  --dw-focus-outline-color: red;
+  --dw-input-hover-border-color: var(--color-primary);
+  --dw-select-border-width: 2px;
+}
+
+
+/* ----------
+1. Style types of Control
+---------- */
+
+/*
+TIP: All Control elements are the Control's type from the command bar, kebab-case, prefixed with "dw-".
+Examples: dw-text-box, dw-date-picker, dw-picture-box, dw-option-button
+
+Control names can be identified using "Inspect Element" in your browser's Developer Tools.
+*/
+
+/* Style all Hyperlink Controls */
+dw-hyperlink {
+  outline: 2px dashed var(--color-primary);
+  outline-offset: 5px;
+}
+
+/* Style all disabled Upload Controls */
+dw-upload-control[disabled] {
+  opacity: 50%;
+}
+
+
+/* ----------
+2. Style Controls interactions (e.g. hover, focus)
+---------- */
+
+/* Style all Hyperlink Controls on hover */
+dw-hyperlink:hover {
+  outline: 3px dotted var(--color-secondary);
+  outline-offset: 8px;
+}
+
+/* Style all Numeric Text Box Controls when there is focus anywhere within the Control */
+dw-numeric-text-box:focus-within {
+  background-color: rgba(0, 0, 255, 0.25);
+}
+
+
+/* ----------
+3. Style using the "Metadata" Property & [data-metadata] attribute
+---------- */
+
+/*
+For detailed information on attribute selectors, see:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors
+*/
+
+/*
+  EXACT MATCH (=)
+  Target a Control with a "Metadata" Property that EXACTLY matches "rotate" (no other characters).
+*/
+[data-metadata="rotate"] {
+  transform: rotate(10deg);
+}
+
+/*
+  CONTAINS (*=)
+  Target a Control with a "Metadata" Property containing "circle" (partial match).
+*/
+[data-metadata*="circle"] {
+  border-radius: 50%;
+}
+
+/*
+  EXACT WORD (~=)
+  Target a Control with a "Metadata" Property containing the word "rounded". 'Words' must be separated by a space.
+*/
+[data-metadata~="rounded"] {
+  border-radius: 100em;
+}
+
+/*
+  STARTS WITH (^=)
+  Target a Control with a "Metadata" Property starting with "shadow".
+*/
+[data-metadata^="shadow"] {
+  box-shadow: 0 10px 10px rgba(0, 0, 0, .25);
+}
+
+/*
+  ENDS WITH ($=)
+  Target a Control with a "Metadata" property ending with "blur".
+*/
+[data-metadata$="blur"] {
+  filter: blur(5px);
+}
+
+
+/* ----------
+4. Style named parts of a Control using the ::part() selector
+---------- */
+
+/*
+TIP: Part names can be identified using "Inspect Element" in your browser's Developer Tools.
+Look for the [part] attribute.
+
+For detailed information on the ::part() selector, see:
+https://developer.mozilla.org/en-US/docs/Web/CSS/::part
+*/
+
+/* Style the 'button' part of all Dialog Button Controls */
+dw-dialog-button::part(button) {
+  border-radius: 10em;
+}
+
+/* Style the 'input' part of all Text Box Controls */
+dw-text-box::part(input) {
+  padding: 0.5rem;
+  border-width: 2px;
+  border-radius: 10px;
+}
+
+
+/* ----------
+5. Style using combined selectors
+---------- */
+
+/* Style 'button' part of Control with matching Metadata */
+[data-metadata*="styled-button"]::part(button) {
+  background-color: var(--color-primary);
+  color: white;
+  border: 0;
+}
+
+/* Style parts of Control with matching Metadata when the Control is disabled */
+[data-metadata*="styled-button"][disabled]::part(button) {
+  opacity: 0.25;
+}
+
+[data-metadata*="styled-button"][disabled]::part(text) {
+  color: white;
+}
+
+/* Style matching Metadata on hover, when the Control is not disabled */
+[data-metadata*="styled-button"]:not([disabled]):hover {
+  filter: grayscale(.25);
+}
+
+/* Style Macro Buttons with matching Metadata */
+dw-macro-button[data-metadata*="styled-button"] {
+  border-radius: 10px;
+}
+
+/* Style the 'button' part of Macro Buttons with matching Metadata when active */
+dw-macro-button[data-metadata*="styled-button"]::part(button):active {
+  filter: grayscale(.25);
+}
+
+/* Style the 'handle' part of a Slider Control */
+dw-slider::part(handle) {
+  border: none;
+  background-color: var(--color-primary);
+}
+
+/* Style the 'handle' part of a Slider when hovering inside the Control */
+dw-slider:hover::part(handle) {
+  background-color: var(--color-secondary);
+}
+
+/* Style the 'handle' part of a Slider when hovering the 'handle' only */
+dw-slider::part(handle):hover {
+  background-color: orange;
+}
+
+/* Style the 'handle' part of all Slider Controls when active */
+dw-slider::part(handle):active {
+  background-color: red;
+}
+
+
+/* ----------
+6. Style Controls using locally scoped CSS "custom properties"
+---------- */
+
+/*
+Local properties will override global scoped properties applied via :host.
+
+For detailed information on CSS "custom properties", see:
+https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties
+*/
+
+/* Style a Combo Box Control */
+dw-combo-box[data-metadata*="styled"] {
+  --dw-select-padding: .15em 1.25em .15em .3em;
+  --dw-select-border-radius: 5px;
+  --dw-select-arrow-color: var(--color-primary);
+}
+
+/* Style internal properties of a Check Box */
+dw-check-box[data-metadata*="styled"] {
+  --dw-control-caption-spacing: .5rem;
+  --dw-checkbox-size: 1.5rem;
+  --dw-checkbox-check-color: var(--color-primary);
+}
+
+/* Style internal properties of Option Buttons */
+dw-option-button[data-metadata*="styled"] {
+  --dw-option-size: 20px;
+  --dw-option-dot-inset: 4px;
+  --dw-option-dot-color: var(--color-primary);
+}
+
+/* Style internal properties of Option Groups */
+dw-option-group[data-metadata*="styled"] {
+  --dw-option-size: 2em;
+  --dw-option-dot-inset: .4em;
+  --dw-option-dot-color: var(--color-primary);
+}
+
+dw-option-group[data-metadata*="styled"]::part(fieldset),
+dw-option-group[data-metadata*="styled"]::part(radio) {
+  border: 2px solid var(--color-primary);
+}
+
+
+/* ----------
+7. Animate Properties
+---------- */
+
+/* Animate position (set via margin from top-left of the Form) */
+[data-metadata*="animate-position"] {
+  transition: margin .5s ease;
+}
+
+/* Animate color properties */
+[data-metadata*="animate-color"] {
+  transition:
+    background-color .5s ease,
+    color .5s ease;
+}
+
+
+/* ----------
+8. Example Styles
+---------- */
+
+/* Generic Button Styles Color */
+[data-metadata*="button-border"]::part(button) {
+  border-width: 2px;
+  border-color: silver;
+  background-color: transparent;
+  transition: background-color .2s ease;
+}
+
+[data-metadata*="button-border"]::part(button):hover {
+  background-color: silver;
+}
+
+/* Solid Color */
+[data-metadata*="button-solid"]::part(button) {
+  background-color: var(--color-primary);
+  color: white;
+  border: 0;
+  transition: background-color .2s ease;
+}
+
+[data-metadata*="button-solid"]::part(button):hover {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+/* Rounded Button */
+[data-metadata*="button-rounded"]::part(button) {
+  border-radius: 5px;
+}
+
+/* 'Pill' Button */
+[data-metadata*="button-pill"]::part(button) {
+  border-radius: 100em;
+}
+
+/* Raised Button */
+[data-metadata*="button-raised"]::part(button) {
+  border-width: 0;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, .2) 0 -3px 0 inset;
+}
+
+[data-metadata*="button-raised"]::part(button):hover {
+  background-color: #ddd;
+}
+
+[data-metadata*="button-raised"]::part(button):active {
+  background-color: #ccc;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px inset;
+}
+
+/* Shadow Button */
+[data-metadata*="button-shadow"] {
+  overflow: visible;
+}
+
+[data-metadata*="button-shadow"]::part(button) {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+}
+
+/* Gradient Button */
+[data-metadata*="button-gradient"]::part(button) {
+  border: 0;
+  background: linear-gradient(45deg, blue 0%, aqua 100%);
+  color: white;
+}
+
+[data-metadata*="button-gradient"]::part(button):hover {
+  background: linear-gradient(45deg, aqua 0%, blue 100%);
+}
+
+/* Shaped Button */
+[data-metadata*="button-shaped"] {
+  clip-path: polygon(85% 0, 100% 50%, 85% 100%, 0% 100%, 15% 50%, 0% 0%);
+}
+
+/* Padded Label */
+dw-label[data-metadata*="css-selector"] {
+  padding: 0.5em;
+}

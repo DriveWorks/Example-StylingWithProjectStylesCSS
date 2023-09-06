@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Styling with ProjectStyles.css | DriveWorks</title>
+</head>
+<body>
+
+    <div id="form-output">
+        Loading...
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        const output = document.getElementById("form-output");
+
+        // Run on client load
+        async function dwClientLoaded() {
+            try {
+                // Create DriveWorks API client
+                const DW_CLIENT = new window.DriveWorksLiveClient(config.serverUrl);
+
+                // Login to group
+                await DW_CLIENT.loginGroup(config.groupAlias);
+
+                // Create Specification
+                const specification = await DW_CLIENT.createSpecification(config.groupAlias, config.projectName);
+
+                // Clear output element
+                output.innerHTML = "";
+
+                // Render Specification
+                await specification.render(output);
+
+                // Prevent timeout
+                specification.enableAutoPing();
+            } catch (error) {
+                console.log(error);
+
+                output.innerHTML = error;
+            }
+        }
+    </script>
+
+    <!-- Option A) Directly load Client Library -->
+    <!-- <script src="https://YOUR-THEME-SERVER.COM/DriveworksLiveIntegrationClient.min.js" onload="dwClientLoaded()"></script> -->
+
+    <!-- Option B) Inject Client Library dynamically from server url in config file -->
+    <script>
+        (function(doc, script) {
+            script = doc.createElement("script");
+            script.src = config.serverUrl + "/DriveWorksLiveIntegrationClient.min.js";
+            script.onload = () => dwClientLoaded(); // Custom local function run when client has loaded
+            doc.body.appendChild(script);
+        }(document));
+    </script>
+
+</body>
+</html>
