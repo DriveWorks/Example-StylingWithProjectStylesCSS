@@ -4,7 +4,7 @@
 
 #### Minimum DriveWorks Version: 21.0
 
-> For styling via CSS in DriveWorks 20.3 and below, see: [IntegrationThemeExample-StylingWithExternalCSS](https://github.com/DriveWorks/IntegrationThemeExample-StylingWithExternalCSS)
+> For styling via CSS in DriveWorks 20.3 and below, see: [Integration Theme Example - Styling with External CSS](https://github.com/DriveWorks/IntegrationThemeExample-StylingWithExternalCSS)
 
 A distributable example that demonstrates how to style DriveWorks Controls using CSS via `ProjectStyles.css`.
 
